@@ -1,0 +1,19 @@
+.slidev-transition {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: all 0.3s;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slidev-leave {
+  transform: translateX(-100%);
+  opacity: 1;
+}
+.slidev-enter {
+  transform: translateX(100%);
+  opacity: 1;
+}
