@@ -7,7 +7,11 @@
       </div>
       <div class="datepicker__controls">
         <div class="datepicker__month">
-          {{ month.getFormatted() }}
+          <transition-group name="slideh">
+            <span v-for="month in [month]" :key="month.month">{{
+              month.getFormatted()
+            }}</span>
+          </transition-group>
         </div>
         <button class="datepicker__next" @click="nextMonth()">
           <svg viewBox="0 0 24 24">
@@ -29,7 +33,7 @@
           {{ day }}
         </div>
       </div>
-      <div class="datepicker__days">
+      <div class="datepicker__days" :class="classWeeks">
         <div
           class="datepicker__day"
           :style="{ width: `${month.getWeekStart() * 41}px` }"
@@ -85,6 +89,9 @@ export default {
     dateFormatted() {
       return this.cloneDate.format("dddd DD MMM");
     },
+    classWeeks() {
+      return `has-${this.month.getWeeks()}-weeks`;
+    },
   },
   methods: {
     isSelected(day) {
@@ -122,7 +129,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "animation";
+@import "animation.scss";
 
 $header-height: 100px;
 $day-size: 41px;
@@ -171,6 +178,10 @@ $day-size: 41px;
   position: relative;
   margin: 14px 14px 0 14px;
   height: $day-size * 5;
+  transition: height 0.3s;
+  &.has-6-weeks {
+    height: $day-size * 6;
+  }
 }
 
 .datepicker__day {
@@ -243,7 +254,10 @@ $day-size: 41px;
 
 .datepicker__month {
   position: absolute;
-  top: 0;
+  overflow: hidden;
+  height: 16px;
+  line-height: 16px;
+  top: 20px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -283,12 +297,12 @@ $day-size: 41px;
 }
 
 .datepicker_slide-enter-active {
-  animation: bounce-in 0.3s;
+  animation: translate-horizontal 0.3s;
 }
 .datepicker_slide-leave-active {
-  animation: bounce-in 0.3s reverse;
+  animation: translate-horizontal 0.3s reverse;
 }
-@keyframes bounce-in {
+@keyframes translate-horizontal {
   from {
     transform: translateY(-50px);
     opacity: 0;

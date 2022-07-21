@@ -23,4 +23,8 @@ export default class Month {
   getFormatted() {
     return this.start.format("MMMM YYYY");
   }
+
+  getWeeks() {
+    return this.end.week() - this.start.week() + 1;
+  }
 }
